@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: config-server
-        image: anuj55149/ecommerce-config-server
+        image: xaviermaldonadony/ecommerce-config-server
         resources:
           limits:
             memory: "400Mi"

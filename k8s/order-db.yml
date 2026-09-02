@@ -58,11 +58,11 @@ spec:
       resources:
         requests:
           storage: 1Gi
-      storageClassName: "standard-rwo" 
+      storageClassName: "standard" 
       volumeMode: Filesystem
 
 ---
-
+#headleass service
 apiVersion: v1
 kind: Service
 metadata:
