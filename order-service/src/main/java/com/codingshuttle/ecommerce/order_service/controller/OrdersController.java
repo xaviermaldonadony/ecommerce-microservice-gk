@@ -5,8 +5,8 @@ import com.codingshuttle.ecommerce.order_service.config.FeaturesEnableConfig;
 import com.codingshuttle.ecommerce.order_service.dto.OrderRequestDto;
 import com.codingshuttle.ecommerce.order_service.service.OrdersService;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/core")
-@RequiredArgsConstructor
-@Slf4j
 @RefreshScope
 public class OrdersController {
+
+    private static final Logger log = LoggerFactory.getLogger(OrdersController.class);
 
     private final OrdersService orderService;
 
@@ -27,6 +27,11 @@ public class OrdersController {
     private String myVariable;
 
     private final FeaturesEnableConfig featuresEnableConfig;
+
+    public OrdersController(OrdersService orderService, FeaturesEnableConfig featuresEnableConfig) {
+        this.orderService = orderService;
+        this.featuresEnableConfig = featuresEnableConfig;
+    }
 
     @GetMapping("/helloOrders")
     public String helloOrders() {

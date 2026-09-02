@@ -6,7 +6,8 @@ import com.codingshuttle.ecommerce.inventory_service.dto.ProductDto;
 import com.codingshuttle.ecommerce.inventory_service.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +17,23 @@ import org.springframework.web.client.RestClient;
 import java.util.List;
 
 @RestController
-@Slf4j
-@RequiredArgsConstructor
 @RequestMapping("/products")
 public class ProductController {
+
+    private static final Logger log = LoggerFactory.getLogger(ProductController.class);
 
     private final ProductService productService;
     private final DiscoveryClient discoveryClient;
     private final RestClient restClient;
 
     private final OrdersFeignClient ordersFeignClient;
+
+    public ProductController(ProductService productService, DiscoveryClient discoveryClient, RestClient restClient, OrdersFeignClient ordersFeignClient) {
+        this.productService = productService;
+        this.discoveryClient = discoveryClient;
+        this.restClient = restClient;
+        this.ordersFeignClient = ordersFeignClient;
+    }
 
     @GetMapping("/fetchOrders")
     public String fetchFromOrdersService(HttpServletRequest httpServletRequest) {

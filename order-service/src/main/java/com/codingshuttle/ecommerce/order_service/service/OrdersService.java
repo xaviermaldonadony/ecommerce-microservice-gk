@@ -9,21 +9,27 @@ import com.codingshuttle.ecommerce.order_service.repoitory.OrdersRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class OrdersService {
+
+    private static final Logger log = LoggerFactory.getLogger(OrdersService.class);
 
     private final OrdersRepository orderRepository;
     private final ModelMapper modelMapper;
     private final InventoryOpenFeignClient inventoryOpenFeignClient;
+
+    public OrdersService(OrdersRepository orderRepository, ModelMapper modelMapper, InventoryOpenFeignClient inventoryOpenFeignClient) {
+        this.orderRepository = orderRepository;
+        this.modelMapper = modelMapper;
+        this.inventoryOpenFeignClient = inventoryOpenFeignClient;
+    }
 
     public List<OrderRequestDto> getAllOrders() {
         log.info("Fetching all orders");

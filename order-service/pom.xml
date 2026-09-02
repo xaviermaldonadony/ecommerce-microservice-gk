@@ -130,7 +130,7 @@
 				<version>3.4.4</version>
 				<configuration>
 					<to>
-						<image>docker.io/anuj55149/ecommerce-${project.name}:${project.version}</image>
+						<image>docker.io/xaviermaldonadony/ecommerce-${project.name}:${project.version}</image>
 						<tags>
 							<tag>latest</tag>
 						</tags>
