@@ -50,13 +50,28 @@ jobs:
     needs: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: kubectl - Google Cloud GKE cluster.
-        uses: ameydev/gke-kubectl-action@master
-        env:
-          PROJECT_ID: ${{ env.PROJECT_ID }}
-          APPLICATION_CREDENTIALS: ${{ secrets.GK_SA_KEY }}
-          CLUSTER_NAME: ${{ env.GKE_CLUSTER }}
-          ZONE_NAME: ${{ env.GKE_ZONE }}
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Authenticate to Google Cloud using raw JSON key secret
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          args: apply -f k8s/
+          credentials_json: ${{ secrets.GK_SA_KEY }}
+
+      # Install and configure Google Cloud SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      # Fetch GKE cluster credentials for kubectl
+      - name: Get GKE Credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          project_id: ${{ env.PROJECT_ID }}
+
+      # Deploy manifests to cluster
+      - name: Deploy to GKE
+        run: |
+          kubectl apply -f k8s/
